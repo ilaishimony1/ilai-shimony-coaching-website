@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My App — Ilai Shimony</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-name"><span>ILAI SHIMONY</span></div>
+    <div class="logo-sub">Online Coaching</div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching &amp; Products</a>
+    <a href="app.html">My App</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">Q&amp;A</a>
+    <a href="apply.html" class="nav-apply">Apply Now</a>
+  </div>
+  <button class="nav-burger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="coaching.html">Coaching &amp; Products</a>
+  <a href="app.html">My App</a>
+  <a href="about.html">About Me</a>
+  <a href="faq.html">Q&amp;A</a>
+  <a href="apply.html" class="nav-apply">Apply Now</a>
+</div>
+
+<!-- APP HERO -->
+<section class="app-hero">
+  <div class="app-hero-bg"></div>
+  <div class="container" style="position:relative;z-index:1;">
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="app-hero-content">
+        <div class="app-badge"><span></span>Coming Soon</div>
+        <h1>THE COACHING<br><em style="font-style:normal;background:linear-gradient(135deg,#2e86de,#54a0ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">APP</em></h1>
+        <p>Your entire training experience — programs, progress tracking, video feedback, and direct coach access — all in one place. Built specifically for my athletes.</p>
+        <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+          <a href="apply.html" class="btn-main">Get Early Access via Coaching</a>
+          <a href="#notify" class="btn-ghost">Notify Me at Launch</a>
+        </div>
+      </div>
+
+      <div class="app-mockup">
+        <div class="app-mockup-screen">
+          <div class="app-mockup-inner">
+            <div class="app-icon">🤸</div>
+            <h3>ILAI SHIMONY</h3>
+            <p style="color:var(--blue-lt);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-top:4px;">Coaching App</p>
+            <div style="margin-top:24px;display:flex;flex-direction:column;gap:8px;width:100%;">
+              <div style="background:rgba(46,134,222,0.15);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:left;">
+                <div style="font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Today's Session</div>
+                <div style="font-size:13px;margin-top:4px;">Handstand Training — Week 4</div>
+              </div>
+              <div style="background:rgba(46,134,222,0.08);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:left;">
+                <div style="font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Progress</div>
+                <div style="font-size:13px;margin-top:4px;">78% weekly goal</div>
+              </div>
+              <div style="background:rgba(46,134,222,0.08);border:1px solid var(--border);border-radius:8px;padding:10px 14px;text-align:left;">
+                <div style="font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Messages</div>
+                <div style="font-size:13px;margin-top:4px;color:var(--blue-lt);">1 new from Ilai ✓</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" style="background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="container">
+    <div class="tag">What's Inside</div>
+    <h2 class="section-title">BUILT FOR ATHLETES</h2>
+    <p class="section-sub">Everything you need to train with structure, track your progress, and stay connected with your coach.</p>
+    <div class="app-features">
+      <div class="app-feature">
+        <div class="app-feature-icon">📋</div>
+        <h4>CUSTOM PROGRAMS</h4>
+        <p>Your full personalized program delivered directly in the app. Every session, every exercise, every set — laid out clearly.</p>
+      </div>
+      <div class="app-feature">
+        <div class="app-feature-icon">📈</div>
+        <h4>PROGRESS TRACKING</h4>
+        <p>Log sessions, track PRs, visualize progress over time. See exactly how far you've come week over week.</p>
+      </div>
+      <div class="app-feature">
+        <div class="app-feature-icon">🎥</div>
+        <h4>VIDEO LIBRARY</h4>
+        <p>100+ tutorial videos embedded directly inside your program. No more searching YouTube mid-session.</p>
+      </div>
+      <div class="app-feature">
+        <div class="app-feature-icon">💬</div>
+        <h4>DIRECT MESSAGING</h4>
+        <p>Send videos, ask questions, and get feedback straight inside the app. Your coach is always one tap away.</p>
+      </div>
+      <div class="app-feature">
+        <div class="app-feature-icon">🔔</div>
+        <h4>SMART REMINDERS</h4>
+        <p>Never miss a session. Training reminders built around your own schedule so consistency becomes automatic.</p>
+      </div>
+      <div class="app-feature">
+        <div class="app-feature-icon">⚡</div>
+        <h4>PROGRAM UPDATES</h4>
+        <p>Programs update in real time as you progress. No waiting, no emailing — adjustments appear instantly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTIFY -->
+<section class="section" id="notify">
+  <div class="container">
+    <div class="app-notify">
+      <div class="tag">Stay in the Loop</div>
+      <h2>BE FIRST TO KNOW</h2>
+      <p>Drop your email and I'll notify you the moment the app goes public. Early subscribers get first access.</p>
+      <form class="notify-form" onsubmit="handleNotify(event)">
+        <input type="email" id="notify-email" placeholder="your@email.com" required>
+        <button type="submit" class="btn-main">Notify Me</button>
+      </form>
+      <div id="notify-thanks" style="display:none;margin-top:20px;font-size:14px;color:var(--blue-lt);font-weight:500;">
+        ✓ You're on the list — I'll be in touch!
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-name"><span>ILAI SHIMONY</span></div>
+        <div class="logo-sub" style="margin-top:4px;">Online Coaching</div>
+        <p>Handstands, calisthenics &amp; mobility coaching for athletes who want to move better and train smarter.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <a href="index.html">Home</a>
+        <a href="coaching.html">Coaching &amp; Products</a>
+        <a href="app.html">My App</a>
+        <a href="about.html">About Me</a>
+        <a href="faq.html">Q&amp;A</a>
+      </div>
+      <div class="footer-col">
+        <h4>Work With Me</h4>
+        <a href="apply.html">Apply for Coaching</a>
+        <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" target="_blank">Book a Free Call</a>
+        <a href="https://rupa.pro/ilaishimony1/11_video_call_session_" target="_blank">Video Sessions</a>
+        <a href="https://rupa.pro/ilaishimony1/video_analysis" target="_blank">Video Analysis</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Ilai Shimony. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#" class="social-link" aria-label="Instagram">📸</a>
+        <a href="#" class="social-link" aria-label="YouTube">▶</a>
+        <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+function handleNotify(e) {
+  e.preventDefault();
+  document.querySelector('.notify-form').style.display = 'none';
+  document.getElementById('notify-thanks').style.display = 'block';
+}
+</script>
+</body>
+</html>

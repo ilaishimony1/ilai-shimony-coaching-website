@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q&amp;A — Ilai Shimony</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-name"><span>ILAI SHIMONY</span></div>
+    <div class="logo-sub">Online Coaching</div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching &amp; Products</a>
+    <a href="app.html">My App</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">Q&amp;A</a>
+    <a href="apply.html" class="nav-apply">Apply Now</a>
+  </div>
+  <button class="nav-burger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="coaching.html">Coaching &amp; Products</a>
+  <a href="app.html">My App</a>
+  <a href="about.html">About Me</a>
+  <a href="faq.html">Q&amp;A</a>
+  <a href="apply.html" class="nav-apply">Apply Now</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="container page-hero-content">
+    <div class="tag">Got Questions?</div>
+    <h1>FREQUENTLY<br>ASKED QUESTIONS</h1>
+    <p>Everything you need to know before applying for coaching. Don't see your question? Book a free call and ask me directly.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section">
+  <div class="container">
+    <div class="faq-grid">
+
+      <!-- LEFT COLUMN -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Who is your coaching for?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">My coaching is for anyone serious about improving their handstands, calisthenics, or mobility — from complete beginners to athletes who've been training for years and hit a plateau. You don't need to be at a certain level to start. You just need to be committed.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How much time do I need to train per week?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">Your program is built around your availability. Whether you have 3 hours or 10 hours a week, I'll design something that works within your schedule. The key is consistency — not volume.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What equipment do I need?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">Minimal. Most training can be done with just a pull-up bar and floor space. If you have access to rings, parallettes, or a gym, I can incorporate those too. We work with what you have.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How does the WhatsApp support work?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">You get my personal WhatsApp number. You can send me videos of your training, ask questions, report how sessions went, or flag any pain or discomfort. I typically respond within a few hours — usually much faster.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Can I do this if I have an injury?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">Yes, in most cases. I've worked with athletes coming back from wrist injuries, shoulder issues, lower back problems, and more. I tailor the program specifically around your situation. However, if you have a serious medical condition, please consult a doctor first.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What results can I realistically expect?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">Results depend on your starting point, your goals, and how consistently you train. Most athletes see significant improvements within the first 4–6 weeks when they follow the program. I'll be honest with you about what's realistic for your specific situation during our intro call.</div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div style="display:flex;flex-direction:column;gap:12px;">
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What's included in the 12-week program?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">A fully personalized training program delivered through my coaching app, monthly 1:1 video calls, unlimited WhatsApp support, video analysis whenever you need it, ongoing program adjustments, and access to a private client community.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How is this different from following YouTube videos?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">YouTube gives you generic content made for nobody in particular. Coaching gives you a program built specifically for you, with someone watching your progress and adjusting as you go. The difference in results is night and day — and you waste far less time.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How much does 1:1 coaching cost?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">Pricing is shared after your application and intro call. It varies based on your goals and the level of support you need. If you want a ballpark before applying, book a free 15-minute call and I'll walk you through the options.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            What happens after the 12 weeks?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">Most clients continue coaching after the initial 12 weeks either at the same level or stepping down to a maintenance/check-in plan. You'll also have everything you need to continue training independently if you prefer.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            Do you offer refunds?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">I'm selective about who I work with specifically to avoid this situation. I only accept clients I genuinely believe I can help. If something isn't working in the first two weeks, I'll make it right — we'll talk and find a solution together.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFaq(this)">
+            How do I get started?
+            <span class="faq-chevron">▾</span>
+          </button>
+          <div class="faq-a">Click "Apply Now" and fill out the short application form. I'll review it and get back to you within 24 hours to schedule a free intro call. From there, if it's a good fit, we'll get your program started within a few days.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- STILL HAVE QUESTIONS CTA -->
+    <div class="faq-cta">
+      <div>
+        <h3>STILL HAVE QUESTIONS?</h3>
+        <p>Book a free 15-minute call. No pitch, no pressure — just a real conversation about where you are and what you're looking for.</p>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" target="_blank" class="btn-main">Book Free Call</a>
+        <a href="apply.html" class="btn-ghost">Apply Now</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-name"><span>ILAI SHIMONY</span></div>
+        <div class="logo-sub" style="margin-top:4px;">Online Coaching</div>
+        <p>Handstands, calisthenics &amp; mobility coaching for athletes who want to move better and train smarter.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <a href="index.html">Home</a>
+        <a href="coaching.html">Coaching &amp; Products</a>
+        <a href="app.html">My App</a>
+        <a href="about.html">About Me</a>
+        <a href="faq.html">Q&amp;A</a>
+      </div>
+      <div class="footer-col">
+        <h4>Work With Me</h4>
+        <a href="apply.html">Apply for Coaching</a>
+        <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" target="_blank">Book a Free Call</a>
+        <a href="https://rupa.pro/ilaishimony1/11_video_call_session_" target="_blank">Video Sessions</a>
+        <a href="https://rupa.pro/ilaishimony1/video_analysis" target="_blank">Video Analysis</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Ilai Shimony. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#" class="social-link" aria-label="Instagram">📸</a>
+        <a href="#" class="social-link" aria-label="YouTube">▶</a>
+        <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apply for Coaching — Ilai Shimony</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-name"><span>ILAI SHIMONY</span></div>
+    <div class="logo-sub">Online Coaching</div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching &amp; Products</a>
+    <a href="app.html">My App</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">Q&amp;A</a>
+    <a href="apply.html" class="nav-apply">Apply Now</a>
+  </div>
+  <button class="nav-burger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="coaching.html">Coaching &amp; Products</a>
+  <a href="app.html">My App</a>
+  <a href="about.html">About Me</a>
+  <a href="faq.html">Q&amp;A</a>
+  <a href="apply.html" class="nav-apply">Apply Now</a>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-bg"></div>
+  <div class="container page-hero-content">
+    <div class="tag">Limited Spots Available</div>
+    <h1>APPLY FOR<br>1:1 COACHING</h1>
+    <p>Tell me about yourself and your goals. I review every application personally and get back to you within 24 hours.</p>
+  </div>
+</section>
+
+<!-- APPLY SECTION -->
+<section class="section">
+  <div class="container">
+
+    <!-- SUCCESS STATE -->
+    <div class="apply-success" id="apply-success">
+      <div class="success-icon">🎉</div>
+      <h2>APPLICATION RECEIVED!</h2>
+      <p>Thanks for applying — I've received your application and I'll personally review it and get back to you within 24 hours.<br><br>In the meantime, feel free to book your free intro call below.</p>
+      <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" class="btn-main" target="_blank" style="margin:0 auto;">Book Your Free Intro Call →</a>
+    </div>
+
+    <!-- FORM + SIDEBAR -->
+    <div class="apply-layout" id="apply-layout">
+
+      <!-- FORM -->
+      <div class="apply-form-wrap">
+        <!-- NOTE: Sign up at formspree.io, create a form, and replace YOUR_FORM_ID below -->
+        <form id="apply-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" onsubmit="handleApply(event)">
+
+          <!-- SECTION 1: Personal Info -->
+          <div class="form-section">
+            <div class="form-section-title">01 — Personal Information</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="first-name">First Name *</label>
+                <input type="text" id="first-name" name="first_name" placeholder="Your first name" required>
+              </div>
+              <div class="form-group">
+                <label for="last-name">Last Name *</label>
+                <input type="text" id="last-name" name="last_name" placeholder="Your last name" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+              </div>
+              <div class="form-group">
+                <label for="country">Country</label>
+                <input type="text" id="country" name="country" placeholder="Where are you based?">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="instagram">Instagram Handle (optional)</label>
+              <input type="text" id="instagram" name="instagram" placeholder="@yourhandle">
+            </div>
+          </div>
+
+          <!-- SECTION 2: Training Background -->
+          <div class="form-section">
+            <div class="form-section-title">02 — Training Background</div>
+            <div class="form-group">
+              <label>How long have you been training? *</label>
+              <div class="radio-group">
+                <input type="hidden" name="training_duration" id="training_duration_val">
+                <div class="radio-opt" data-value="beginner" onclick="selectOption(this,'training_duration_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>Less than 1 year</h5>
+                    <p>Just getting started with movement training</p>
+                  </div>
+                </div>
+                <div class="radio-opt" data-value="1-3years" onclick="selectOption(this,'training_duration_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>1–3 years</h5>
+                    <p>Have some solid foundation, looking to level up</p>
+                  </div>
+                </div>
+                <div class="radio-opt" data-value="3-5years" onclick="selectOption(this,'training_duration_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>3–5 years</h5>
+                    <p>Experienced athlete, want more structure</p>
+                  </div>
+                </div>
+                <div class="radio-opt" data-value="5plus" onclick="selectOption(this,'training_duration_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>5+ years</h5>
+                    <p>Advanced athlete pushing my limits</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:20px;">
+              <label for="current-level">Describe your current training level *</label>
+              <textarea id="current-level" name="current_level" placeholder="What can you currently do? What skills are you working on? What does your typical training week look like?" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Do you have any injuries or physical limitations?</label>
+              <textarea id="injuries" name="injuries" placeholder="List any current or recent injuries, pain points, or physical limitations I should know about. Write 'none' if not applicable." style="min-height:80px;"></textarea>
+            </div>
+          </div>
+
+          <!-- SECTION 3: Goals -->
+          <div class="form-section">
+            <div class="form-section-title">03 — Your Goals</div>
+            <div class="form-group">
+              <label>What are you primarily looking to work on? *</label>
+              <div class="radio-group">
+                <input type="hidden" name="focus_area" id="focus_area_val">
+                <div class="radio-opt" data-value="handstands" onclick="selectOption(this,'focus_area_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>🤸 Handstands</h5>
+                    <p>Balance, freestanding, shapes, presses</p>
+                  </div>
+                </div>
+                <div class="radio-opt" data-value="calisthenics" onclick="selectOption(this,'focus_area_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>💪 Calisthenics</h5>
+                    <p>Muscle-ups, levers, planche, bodyweight strength</p>
+                  </div>
+                </div>
+                <div class="radio-opt" data-value="mobility" onclick="selectOption(this,'focus_area_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>🧘 Mobility &amp; Flexibility</h5>
+                    <p>Range of motion, movement quality, injury prevention</p>
+                  </div>
+                </div>
+                <div class="radio-opt" data-value="combination" onclick="selectOption(this,'focus_area_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text">
+                    <h5>⚡ Combination</h5>
+                    <p>A mix of the above tailored to my goals</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:20px;">
+              <label for="main-goal">What is your main goal for the next 12 weeks? *</label>
+              <textarea id="main-goal" name="main_goal" placeholder="Be as specific as possible. What does success look like for you? What do you want to be able to do that you can't do now?" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="biggest-barrier">What's been your biggest barrier to progress so far? *</label>
+              <textarea id="biggest-barrier" name="biggest_barrier" placeholder="Not enough time? Inconsistency? Lack of structure? Injury? Be honest — this helps me build a program that actually fits your life." required></textarea>
+            </div>
+          </div>
+
+          <!-- SECTION 4: Commitment -->
+          <div class="form-section">
+            <div class="form-section-title">04 — Commitment &amp; Logistics</div>
+            <div class="form-group">
+              <label>How many hours per week can you train? *</label>
+              <div class="radio-group">
+                <input type="hidden" name="weekly_hours" id="weekly_hours_val">
+                <div class="radio-opt" data-value="under3" onclick="selectOption(this,'weekly_hours_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text"><h5>Under 3 hours</h5><p>Busy schedule, need efficiency</p></div>
+                </div>
+                <div class="radio-opt" data-value="3to5" onclick="selectOption(this,'weekly_hours_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text"><h5>3–5 hours</h5><p>Moderate availability</p></div>
+                </div>
+                <div class="radio-opt" data-value="5to8" onclick="selectOption(this,'weekly_hours_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text"><h5>5–8 hours</h5><p>Training is a priority</p></div>
+                </div>
+                <div class="radio-opt" data-value="8plus" onclick="selectOption(this,'weekly_hours_val')">
+                  <div class="radio-dot"></div>
+                  <div class="radio-opt-text"><h5>8+ hours</h5><p>All in — training is my lifestyle</p></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top:20px;">
+              <label for="coached-before">Have you worked with a coach before? *</label>
+              <textarea id="coached-before" name="coached_before" placeholder="If yes, what worked, what didn't? If no, what's made you consider coaching now?" style="min-height:80px;" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>How did you find me?</label>
+              <select id="how-found" name="how_found">
+                <option value="" disabled selected>Select an option</option>
+                <option value="instagram">Instagram</option>
+                <option value="youtube">YouTube</option>
+                <option value="tiktok">TikTok</option>
+                <option value="referral">Referred by a friend</option>
+                <option value="google">Google Search</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SECTION 5: Anything Else -->
+          <div class="form-section">
+            <div class="form-section-title">05 — Final Notes</div>
+            <div class="form-group">
+              <label for="extra-notes">Is there anything else you'd like me to know?</label>
+              <textarea id="extra-notes" name="extra_notes" placeholder="Any additional context, questions, or anything specific you want to make sure I understand before we connect." style="min-height:100px;"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-main apply-submit">Submit Application →</button>
+          <p style="margin-top:16px;font-size:12px;color:var(--muted);text-align:center;">I review every application personally and reply within 24 hours.</p>
+
+        </form>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="apply-sidebar">
+        <div class="tag" style="margin-bottom:20px;">What You Get</div>
+        <h3>12-WEEK 1:1 COACHING</h3>
+        <div class="sidebar-benefits">
+          <div class="sidebar-benefit">
+            <div class="sidebar-benefit-icon">📋</div>
+            <div class="sidebar-benefit-text">
+              <h4>Custom Program</h4>
+              <p>Built entirely around your goals, schedule, and level.</p>
+            </div>
+          </div>
+          <div class="sidebar-benefit">
+            <div class="sidebar-benefit-icon">📞</div>
+            <div class="sidebar-benefit-text">
+              <h4>Monthly Calls</h4>
+              <p>1:1 video check-ins to review progress and adjust.</p>
+            </div>
+          </div>
+          <div class="sidebar-benefit">
+            <div class="sidebar-benefit-icon">💬</div>
+            <div class="sidebar-benefit-text">
+              <h4>Daily WhatsApp Support</h4>
+              <p>Direct access to me every day — questions, videos, feedback.</p>
+            </div>
+          </div>
+          <div class="sidebar-benefit">
+            <div class="sidebar-benefit-icon">🎥</div>
+            <div class="sidebar-benefit-text">
+              <h4>Video Analysis</h4>
+              <p>Send training clips and get detailed technique breakdowns.</p>
+            </div>
+          </div>
+          <div class="sidebar-benefit">
+            <div class="sidebar-benefit-icon">📱</div>
+            <div class="sidebar-benefit-text">
+              <h4>Coaching App Access</h4>
+              <p>Full program, progress tracking, and video library in one place.</p>
+            </div>
+          </div>
+          <div class="sidebar-benefit">
+            <div class="sidebar-benefit-icon">👥</div>
+            <div class="sidebar-benefit-text">
+              <h4>Private Client Group</h4>
+              <p>Community of athletes on the same journey as you.</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="sidebar-divider">
+        <p class="sidebar-quote">"The best investment I made in my training was getting a coach who actually understood where I was coming from."</p>
+        <div class="sidebar-author">— Alex M., Client</div>
+
+        <hr class="sidebar-divider">
+        <div style="font-size:12px;color:var(--muted);line-height:1.7;">
+          <strong style="color:var(--text);">Not ready to apply?</strong><br>
+          Book a free 15-min intro call first — no pressure, no commitment.
+        </div>
+        <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" target="_blank" class="btn-ghost" style="margin-top:16px;width:100%;justify-content:center;font-size:12px;padding:12px;">Book Free Call</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-name"><span>ILAI SHIMONY</span></div>
+        <div class="logo-sub" style="margin-top:4px;">Online Coaching</div>
+        <p>Handstands, calisthenics &amp; mobility coaching for athletes who want to move better and train smarter.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <a href="index.html">Home</a>
+        <a href="coaching.html">Coaching &amp; Products</a>
+        <a href="app.html">My App</a>
+        <a href="about.html">About Me</a>
+        <a href="faq.html">Q&amp;A</a>
+      </div>
+      <div class="footer-col">
+        <h4>Work With Me</h4>
+        <a href="apply.html">Apply for Coaching</a>
+        <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" target="_blank">Book a Free Call</a>
+        <a href="https://rupa.pro/ilaishimony1/11_video_call_session_" target="_blank">Video Sessions</a>
+        <a href="https://rupa.pro/ilaishimony1/video_analysis" target="_blank">Video Analysis</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Ilai Shimony. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#" class="social-link" aria-label="Instagram">📸</a>
+        <a href="#" class="social-link" aria-label="YouTube">▶</a>
+        <a href="#" class="social-link" aria-label="TikTok">🎵</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+function handleApply(e) {
+  const formId = document.getElementById('apply-form').action;
+  if (formId.includes('YOUR_FORM_ID')) {
+    e.preventDefault();
+    document.getElementById('apply-layout').style.display = 'none';
+    document.getElementById('apply-success').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  // If real Formspree ID is set, let Formspree handle submission
+  // but show success UI via AJAX
+  e.preventDefault();
+  const form = document.getElementById('apply-form');
+  const data = new FormData(form);
+  fetch(form.action, {
+    method: 'POST',
+    body: data,
+    headers: { 'Accept': 'application/json' }
+  }).then(r => {
+    if (r.ok) {
+      document.getElementById('apply-layout').style.display = 'none';
+      document.getElementById('apply-success').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      alert('Something went wrong. Please try again or email me directly at ilaishimony1@gmail.com');
+    }
+  }).catch(() => {
+    alert('Something went wrong. Please try again or email me directly at ilaishimony1@gmail.com');
+  });
+}
+</script>
+</body>
+</html>
