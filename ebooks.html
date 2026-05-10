@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Library — Ilai Shimony</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.lib-hero { padding: 100px 24px 48px; text-align: center; }
+.lib-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(52px, 10vw, 88px); letter-spacing: 2px; line-height: 1; margin-bottom: 14px; }
+.lib-hero p { font-size: 15px; color: rgba(255,255,255,0.5); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+/* Filter tabs */
+.lib-filters { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; padding: 0 24px 40px; }
+.lib-filter {
+  padding: 8px 20px; border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+  color: rgba(255,255,255,0.5);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  text-decoration: none; display: inline-block;
+}
+.lib-filter.active, .lib-filter:hover {
+  border-color: #2e86de;
+  color: #fff;
+  background: rgba(46,134,222,0.12);
+}
+
+/* Product grid */
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* Product card */
+.lib-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.lib-card:hover { border-color: rgba(46,134,222,0.35); transform: translateY(-3px); }
+
+/* Thumbnail */
+.lib-thumb {
+  aspect-ratio: 16/9;
+  background: #0d1e36;
+  position: relative;
+  overflow: hidden;
+}
+.lib-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.lib-thumb-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+  background: linear-gradient(135deg, #0d1e36, #1a3158);
+}
+.lib-play-icon {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.lib-play-icon svg { opacity: 0.5; transition: opacity 0.2s; }
+.lib-card:hover .lib-play-icon svg { opacity: 0.9; }
+.lib-badge {
+  position: absolute; top: 12px; left: 12px;
+  background: #2e86de; color: #fff;
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+}
+.lib-badge.challenge { background: #e84393; }
+.lib-badge.followalong { background: #2e86de; }
+.lib-badge.guide { background: #27ae60; }
+
+/* Card body */
+.lib-body { padding: 18px 20px 20px; display: flex; flex-direction: column; flex: 1; gap: 8px; }
+.lib-cat { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #54a0ff; }
+.lib-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; line-height: 1.1; }
+.lib-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; flex: 1; }
+.lib-meta { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 4px; }
+.lib-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+.lib-price { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; }
+.lib-btn {
+  padding: 10px 18px;
+  background: rgba(46,134,222,0.12);
+  border: 1px solid rgba(46,134,222,0.35);
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.lib-btn:hover { background: rgba(46,134,222,0.25); }
+
+/* Empty state for filter */
+.lib-empty { display: none; text-align: center; padding: 60px 24px; color: rgba(255,255,255,0.3); font-size: 14px; grid-column: 1/-1; }
+
+/* Bundle banner */
+.lib-bundle {
+  display: flex; align-items: center; justify-content: space-between; gap: 32px;
+  background: linear-gradient(135deg, rgba(46,134,222,0.15) 0%, rgba(46,134,222,0.05) 100%);
+  border: 1px solid rgba(46,134,222,0.4);
+  border-radius: 20px; padding: 36px 40px;
+  position: relative; overflow: hidden;
+}
+.lib-bundle::before {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: rgba(46,134,222,0.08);
+}
+.lib-bundle-left { flex: 1; }
+.lib-bundle-tag {
+  display: inline-block; background: #2e86de; color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 20px; margin-bottom: 14px;
+}
+.lib-bundle-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(28px, 4vw, 42px); letter-spacing: 1.5px; line-height: 1; margin-bottom: 12px; }
+.lib-bundle-desc { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.7; max-width: 480px; margin-bottom: 18px; }
+.lib-bundle-includes { display: flex; flex-wrap: wrap; gap: 10px 20px; }
+.lib-bundle-includes span { font-size: 12px; color: rgba(255,255,255,0.7); font-weight: 600; }
+.lib-bundle-right { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+.lib-bundle-price { font-family: 'Bebas Neue', sans-serif; font-size: 64px; letter-spacing: 2px; line-height: 1; color: #fff; }
+.lib-bundle-sub { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: .5px; margin-bottom: 8px; }
+.lib-bundle-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 28px; background: #2e86de; border: none; border-radius: 10px;
+  color: #fff; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: background 0.2s; white-space: nowrap;
+}
+.lib-bundle-btn:hover { background: #54a0ff; }
+
+.lib-filters-topics { margin-top:0; }
+.lib-filter-topic {
+  padding: 6px 16px; border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  color: rgba(255,255,255,0.35);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  text-decoration: none; display: inline-block;
+}
+.lib-filter-topic.active, .lib-filter-topic:hover {
+  border-color: rgba(84,160,255,0.4);
+  color: #54a0ff;
+  background: rgba(84,160,255,0.08);
+}
+@media (max-width: 700px) {
+  .lib-bundle { flex-direction: column; padding: 28px 24px; text-align: center; }
+  .lib-bundle-includes { justify-content: center; }
+  .lib-bundle-right { width: 100%; }
+  .lib-bundle-btn { width: 100%; justify-content: center; }
+}
+@media (max-width: 600px) {
+  .lib-grid { grid-template-columns: 1fr; }
+}
+
+/* Small product grid */
+.lib-grid-sm {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.lib-card-sm {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.lib-card-sm:hover { border-color: rgba(46,134,222,0.35); transform: translateY(-2px); }
+.lib-sm-thumb {
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #0d1e36, #1a3158);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.lib-sm-emoji { font-size: 28px; }
+.lib-sm-body {
+  padding: 10px 12px 12px;
+  display: flex; flex-direction: column; flex: 1; gap: 6px;
+}
+.lib-sm-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 13px; letter-spacing: .8px; line-height: 1.2;
+}
+.lib-sm-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto; padding-top: 8px;
+}
+.lib-sm-price { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 1px; }
+.lib-sm-btn {
+  padding: 5px 9px;
+  background: rgba(46,134,222,0.12);
+  border: 1px solid rgba(46,134,222,0.35);
+  border-radius: 6px; color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s; white-space: nowrap;
+}
+.lib-sm-btn:hover { background: rgba(46,134,222,0.25); }
+@media (max-width: 500px) {
+  .lib-grid-sm { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="index.html" class="logo"><img src="images/logo.png" alt="Ilai Shimony" class="logo-img"></a>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching</a>
+    <a href="ebooks.html" class="active">E-Books</a>
+    <a href="app.html">My App</a>
+    <a href="events.html">Events &amp; Workshops</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">FAQ</a>
+    <a href="cart.html" class="nav-cart" aria-label="Cart" style="position:relative;padding:8px 10px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="cart-badge" style="display:none;position:absolute;top:2px;right:2px;background:#2e86de;color:#fff;font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;"></span>
+    </a>
+    <a href="apply.html" class="nav-apply">Apply Now</a>
+  </div>
+  <button class="nav-burger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <div class="nav-mobile-header">
+    <a href="index.html" class="logo"><img src="images/logo.png" alt="Ilai Shimony" class="logo-img"></a>
+    <button onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;color:#fff;padding:4px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="nav-mobile-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching</a>
+    <a href="ebooks.html">E-Books</a>
+    <a href="app.html">My App</a>
+    <a href="events.html">Events &amp; Workshops</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">FAQ</a>
+    <a href="cart.html">🛒 Cart</a>
+  </div>
+  <div class="nav-mobile-footer">
+    <a href="apply.html" class="btn-main nav-apply">Apply Now</a>
+  </div>
+</div>
+
+<div id="cart-toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e3a5f;border:1px solid rgba(46,134,222,0.4);color:#fff;padding:12px 22px;border-radius:30px;font-size:13px;font-weight:500;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap;"></div>
+
+<!-- HERO -->
+<div class="lib-hero">
+  <div class="tag" style="margin-bottom:16px;" id="hero-tag">Video Library</div>
+  <h1 id="hero-title">PROGRAMS &<br>FOLLOW-ALONGS</h1>
+  <p id="hero-desc">Structured video programs you can train with anywhere. Follow-alongs, challenges, and focused guides — drop in and get to work.</p>
+</div>
+
+<!-- FILTERS -->
+<div style="max-width:1100px;margin:0 auto;padding:0 24px 12px;">
+  <!-- Row 1: Type -->
+  <div class="lib-filters" style="margin-bottom:10px;">
+    <a class="lib-filter" href="ebooks.html" data-type="all">All</a>
+    <a class="lib-filter" href="ebooks.html?type=challenge" data-type="challenge">Challenges</a>
+    <a class="lib-filter" href="ebooks.html?type=followalong" data-type="followalong">Follow-Alongs</a>
+    <a class="lib-filter" href="ebooks.html?type=guide" data-type="guide">Guides</a>
+  </div>
+  <!-- Row 2: Topic -->
+  <div class="lib-filters lib-filters-topics">
+    <a class="lib-filter-topic" href="ebooks.html" data-topic="all">All Topics</a>
+    <a class="lib-filter-topic" href="ebooks.html?topic=handstand" data-topic="handstand">Handstands</a>
+    <a class="lib-filter-topic" href="ebooks.html?topic=mobility" data-topic="mobility">Mobility</a>
+    <a class="lib-filter-topic" href="ebooks.html?topic=calisthenics" data-topic="calisthenics">Calisthenics</a>
+    <a class="lib-filter-topic" href="ebooks.html?topic=beginner" data-topic="beginner">Beginner</a>
+  </div>
+</div>
+
+<!-- =====================================================================
+     PRODUCT GRID
+     data-category: "challenge" | "followalong" | "guide"
+     data-topic:    "handstand" | "mobility" | "calisthenics" | "beginner"
+     ===================================================================== -->
+
+<!-- COMPLETE BUNDLE BANNER -->
+<div style="max-width:1100px;margin:0 auto 32px;padding:0 24px;">
+  <div class="lib-bundle">
+    <div class="lib-bundle-left">
+      <div class="lib-bundle-tag">Best Value</div>
+      <h2 class="lib-bundle-title">COMPLETE LIBRARY BUNDLE</h2>
+      <p class="lib-bundle-desc">Every program, challenge, and follow-along — all in one. Get lifetime access to everything in the library, including all future content added. One price, everything included.</p>
+      <div class="lib-bundle-includes">
+        <span>✓ All current programs</span>
+        <span>✓ All future releases</span>
+        <span>✓ Lifetime access</span>
+        <span>✓ All categories</span>
+      </div>
+    </div>
+    <div class="lib-bundle-right">
+      <div class="lib-bundle-price">$650</div>
+      <div class="lib-bundle-sub">one-time · lifetime access</div>
+      <button class="lib-bundle-btn" onclick="Cart.add({id:'complete-bundle', name:'Complete Library Bundle', price:650, img:''})">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        Get Everything
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- BEST SELLERS LABEL -->
+<div style="max-width:1100px;margin:0 auto 16px;padding:0 24px;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:rgba(255,255,255,0.9);">BEST SELLERS</span>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+  </div>
+</div>
+
+<div class="lib-grid" id="lib-grid">
+
+  <!-- PRODUCT 1 -->
+  <div class="lib-card" data-category="challenge" data-topic="handstand">
+    <div class="lib-thumb">
+      <div class="lib-thumb-placeholder">🤸</div>
+      <!-- Replace placeholder with: <img src="images/YOUR-THUMBNAIL.jpg" alt="..."> -->
+      <div class="lib-badge challenge">Challenge</div>
+      <div class="lib-play-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.4)"/><polygon points="10,8 16,12 10,16" fill="#fff"/></svg>
+      </div>
+    </div>
+    <div class="lib-body">
+      <div class="lib-cat">Challenge</div>
+      <div class="lib-title">30-DAY HANDSTAND CHALLENGE</div>
+      <div class="lib-desc">A full month of daily handstand training. Each session builds on the last — from wrist prep to freestanding holds. No equipment needed.</div>
+      <div class="lib-meta">
+        <span>📅 30 days</span>
+        <span>🎥 30 videos</span>
+        <span>⏱ 20–40 min/day</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price">$29.99</div>
+        <button class="lib-btn" onclick="Cart.add({id:'ebook-30day-handstand', name:'30-Day Handstand Challenge', price:29.99, img:''})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 2 -->
+  <div class="lib-card" data-category="followalong" data-topic="calisthenics">
+    <div class="lib-thumb">
+      <div class="lib-thumb-placeholder">💪</div>
+      <!-- Replace placeholder with: <img src="images/YOUR-THUMBNAIL.jpg" alt="..."> -->
+      <div class="lib-badge followalong">Follow-Along</div>
+      <div class="lib-play-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.4)"/><polygon points="10,8 16,12 10,16" fill="#fff"/></svg>
+      </div>
+    </div>
+    <div class="lib-body">
+      <div class="lib-cat">Follow-Along</div>
+      <div class="lib-title">CALISTHENICS FOLLOW-ALONG SERIES</div>
+      <div class="lib-desc">Train alongside me in real time. Upper body, core, and full-body sessions you can do anywhere — bodyweight only.</div>
+      <div class="lib-meta">
+        <span>📅 8 weeks</span>
+        <span>🎥 24 videos</span>
+        <span>⏱ 30–50 min/session</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price">$24.99</div>
+        <button class="lib-btn" onclick="Cart.add({id:'ebook-calisthenics-series', name:'Calisthenics Follow-Along Series', price:24.99, img:''})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT 3 -->
+  <div class="lib-card" data-category="guide" data-topic="mobility">
+    <div class="lib-thumb">
+      <div class="lib-thumb-placeholder">🧘</div>
+      <!-- Replace placeholder with: <img src="images/YOUR-THUMBNAIL.jpg" alt="..."> -->
+      <div class="lib-badge guide">Guide</div>
+      <div class="lib-play-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="rgba(255,255,255,0.9)"><circle cx="12" cy="12" r="11" fill="rgba(0,0,0,0.4)"/><polygon points="10,8 16,12 10,16" fill="#fff"/></svg>
+      </div>
+    </div>
+    <div class="lib-body">
+      <div class="lib-cat">Guide</div>
+      <div class="lib-title">WRIST & SHOULDER MOBILITY PROGRAM</div>
+      <div class="lib-desc">The foundation most people skip. A complete mobility program for wrists, shoulders, and thoracic spine — built specifically for handstand training.</div>
+      <div class="lib-meta">
+        <span>📅 4 weeks</span>
+        <span>🎥 12 videos</span>
+        <span>⏱ 15–25 min/session</span>
+      </div>
+      <div class="lib-footer">
+        <div class="lib-price">$19.99</div>
+        <button class="lib-btn" onclick="Cart.add({id:'ebook-mobility-program', name:'Wrist & Shoulder Mobility Program', price:19.99, img:''})">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD MORE BEST SELLERS ABOVE THIS LINE -->
+
+</div>
+
+<!-- MORE PROGRAMS -->
+<div style="max-width:1100px;margin:40px auto 16px;padding:0 24px;">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:rgba(255,255,255,0.9);">MORE PROGRAMS</span>
+    <div style="flex:1;height:1px;background:rgba(255,255,255,0.08);"></div>
+  </div>
+</div>
+
+<div class="lib-grid-sm" id="lib-grid-sm">
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="handstand"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🤸</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">BEGINNER HANDSTAND FOLLOW-ALONG</div><div class="lib-sm-footer"><span class="lib-sm-price">$14.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-hs-beginner-fa',name:'Beginner Handstand Follow-Along',price:14.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="challenge" data-topic="mobility"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🧘</div><div class="lib-badge challenge" style="font-size:8px;padding:3px 8px;">Challenge</div></div><div class="lib-sm-body"><div class="lib-sm-title">30-DAY MOBILITY CHALLENGE</div><div class="lib-sm-footer"><span class="lib-sm-price">$19.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-mobility-30d',name:'30-Day Mobility Challenge',price:19.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="guide" data-topic="handstand"><div class="lib-sm-thumb"><div class="lib-sm-emoji">📐</div><div class="lib-badge guide" style="font-size:8px;padding:3px 8px;">Guide</div></div><div class="lib-sm-body"><div class="lib-sm-title">PIKE & COMPRESSION TRAINING</div><div class="lib-sm-footer"><span class="lib-sm-price">$17.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-pike-compression',name:'Pike & Compression Training',price:17.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="challenge" data-topic="calisthenics"><div class="lib-sm-thumb"><div class="lib-sm-emoji">⚡</div><div class="lib-badge challenge" style="font-size:8px;padding:3px 8px;">Challenge</div></div><div class="lib-sm-body"><div class="lib-sm-title">L-SIT TO V-SIT PROGRAM</div><div class="lib-sm-footer"><span class="lib-sm-price">$22.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-lsit-vsit',name:'L-Sit to V-Sit Program',price:22.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="guide" data-topic="mobility"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🙆</div><div class="lib-badge guide" style="font-size:8px;padding:3px 8px;">Guide</div></div><div class="lib-sm-body"><div class="lib-sm-title">SHOULDER WARM-UP SERIES</div><div class="lib-sm-footer"><span class="lib-sm-price">$12.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-shoulder-warmup',name:'Shoulder Warm-Up Series',price:12.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="challenge" data-topic="handstand"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🔥</div><div class="lib-badge challenge" style="font-size:8px;padding:3px 8px;">Challenge</div></div><div class="lib-sm-body"><div class="lib-sm-title">HANDSTAND PUSH-UP PROGRAM</div><div class="lib-sm-footer"><span class="lib-sm-price">$24.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-hspu',name:'Handstand Push-Up Program',price:24.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="guide" data-topic="mobility"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🦵</div><div class="lib-badge guide" style="font-size:8px;padding:3px 8px;">Guide</div></div><div class="lib-sm-body"><div class="lib-sm-title">FULL BODY FLEXIBILITY GUIDE</div><div class="lib-sm-footer"><span class="lib-sm-price">$19.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-flexibility',name:'Full Body Flexibility Guide',price:19.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="calisthenics"><div class="lib-sm-thumb"><div class="lib-sm-emoji">💍</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">RING TRAINING BASICS</div><div class="lib-sm-footer"><span class="lib-sm-price">$22.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-rings',name:'Ring Training Basics',price:22.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="beginner"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🌅</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">MORNING MOBILITY ROUTINE</div><div class="lib-sm-footer"><span class="lib-sm-price">$14.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-morning-mobility',name:'Morning Mobility Routine',price:14.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="calisthenics"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🏋️</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">CORE STRENGTH SERIES</div><div class="lib-sm-footer"><span class="lib-sm-price">$19.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-core',name:'Core Strength Series',price:19.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="beginner"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🌱</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">BEGINNER CALISTHENICS</div><div class="lib-sm-footer"><span class="lib-sm-price">$17.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-beginner-cal',name:'Beginner Calisthenics',price:17.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="guide" data-topic="mobility"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🥞</div><div class="lib-badge guide" style="font-size:8px;padding:3px 8px;">Guide</div></div><div class="lib-sm-body"><div class="lib-sm-title">STRADDLE & PANCAKE PROGRAM</div><div class="lib-sm-footer"><span class="lib-sm-price">$19.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-pancake',name:'Straddle & Pancake Program',price:19.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="guide" data-topic="handstand"><div class="lib-sm-thumb"><div class="lib-sm-emoji">☝️</div><div class="lib-badge guide" style="font-size:8px;padding:3px 8px;">Guide</div></div><div class="lib-sm-body"><div class="lib-sm-title">ONE ARM HANDSTAND INTRO</div><div class="lib-sm-footer"><span class="lib-sm-price">$27.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-oahs',name:'One Arm Handstand Intro',price:27.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="challenge" data-topic="calisthenics"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🛡️</div><div class="lib-badge challenge" style="font-size:8px;padding:3px 8px;">Challenge</div></div><div class="lib-sm-body"><div class="lib-sm-title">PLANCHE FUNDAMENTALS</div><div class="lib-sm-footer"><span class="lib-sm-price">$24.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-planche',name:'Planche Fundamentals',price:24.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="guide" data-topic="mobility"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🦴</div><div class="lib-badge guide" style="font-size:8px;padding:3px 8px;">Guide</div></div><div class="lib-sm-body"><div class="lib-sm-title">HIP FLEXOR & HAMSTRING SERIES</div><div class="lib-sm-footer"><span class="lib-sm-price">$14.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-hip-hamstring',name:'Hip Flexor & Hamstring Series',price:14.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="guide" data-topic="handstand"><div class="lib-sm-thumb"><div class="lib-sm-emoji">📏</div><div class="lib-badge guide" style="font-size:8px;padding:3px 8px;">Guide</div></div><div class="lib-sm-body"><div class="lib-sm-title">HANDSTAND LINE & ALIGNMENT</div><div class="lib-sm-footer"><span class="lib-sm-price">$19.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-hs-alignment',name:'Handstand Line & Alignment',price:19.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="beginner"><div class="lib-sm-thumb"><div class="lib-sm-emoji">👊</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">PUSH-UP MASTERY</div><div class="lib-sm-footer"><span class="lib-sm-price">$17.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-pushup',name:'Push-Up Mastery',price:17.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="handstand"><div class="lib-sm-thumb"><div class="lib-sm-emoji">⚖️</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">BALANCE TRAINING SERIES</div><div class="lib-sm-footer"><span class="lib-sm-price">$22.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-balance',name:'Balance Training Series',price:22.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="challenge" data-topic="calisthenics"><div class="lib-sm-thumb"><div class="lib-sm-emoji">💥</div><div class="lib-badge challenge" style="font-size:8px;padding:3px 8px;">Challenge</div></div><div class="lib-sm-body"><div class="lib-sm-title">30-DAY CORE CHALLENGE</div><div class="lib-sm-footer"><span class="lib-sm-price">$19.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-core-30d',name:'30-Day Core Challenge',price:19.99,img:''})">+ Cart</button></div></div></div>
+
+  <div class="lib-card-sm" data-category="followalong" data-topic="calisthenics"><div class="lib-sm-thumb"><div class="lib-sm-emoji">🌀</div><div class="lib-badge followalong" style="font-size:8px;padding:3px 8px;">Follow-Along</div></div><div class="lib-sm-body"><div class="lib-sm-title">FULL BODY FOLLOW-ALONG</div><div class="lib-sm-footer"><span class="lib-sm-price">$24.99</span><button class="lib-sm-btn" onclick="Cart.add({id:'sm-fullbody-fa',name:'Full Body Follow-Along',price:24.99,img:''})">+ Cart</button></div></div></div>
+
+  <!-- ADD MORE SMALL PRODUCTS ABOVE THIS LINE -->
+
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Ilai Shimony" class="logo-img">
+        <p>Handstands, calisthenics &amp; mobility coaching for athletes who want to move better and train smarter.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <a href="index.html">Home</a>
+        <a href="coaching.html">Coaching</a>
+        <a href="ebooks.html">E-Books</a>
+        <a href="app.html">My App</a>
+        <a href="about.html">About Me</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Work With Me</h4>
+        <a href="apply.html">Apply for Coaching</a>
+        <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" target="_blank">Book a Free Call</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Ilai Shimony. All rights reserved.</span></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/discounts.js"></script>
+<script>
+var params = new URLSearchParams(window.location.search);
+var activeType = params.get('type') || 'all';
+var activeTopic = params.get('topic') || 'all';
+
+var heroData = {
+  all:         { tag: 'Video Library',  title: 'PROGRAMS &<br>FOLLOW-ALONGS', desc: 'Structured video programs you can train with anywhere. Follow-alongs, challenges, and focused guides — drop in and get to work.' },
+  challenge:   { tag: 'Challenges',     title: 'CHALLENGES',                  desc: 'Month-long programs that push you daily. Each challenge builds progressively — show up every day and see real results.' },
+  followalong: { tag: 'Follow-Alongs',  title: 'FOLLOW-ALONGS',               desc: 'Train alongside me in real time. Press play and move — no planning, no guessing, just work.' },
+  guide:       { tag: 'Guides',         title: 'GUIDES & PROGRAMS',           desc: 'Focused skill programs with a clear structure. Learn the technique, understand the progressions, and build it properly.' }
+};
+
+var topicHero = {
+  handstand:   { tag: 'Handstands',   title: 'HANDSTAND PROGRAMS' },
+  mobility:    { tag: 'Mobility',     title: 'MOBILITY PROGRAMS'  },
+  calisthenics:{ tag: 'Calisthenics', title: 'CALISTHENICS PROGRAMS' },
+  beginner:    { tag: 'Beginner',     title: 'BEGINNER PROGRAMS'  }
+};
+
+// Update topic links to preserve current type param
+document.querySelectorAll('[data-topic]').forEach(function(a) {
+  var topic = a.dataset.topic;
+  var base = activeType !== 'all' ? '?type=' + activeType : '';
+  if (topic === 'all') {
+    a.href = 'ebooks.html' + base;
+  } else {
+    a.href = 'ebooks.html?' + (activeType !== 'all' ? 'type=' + activeType + '&' : '') + 'topic=' + topic;
+  }
+});
+
+// Mark active tabs
+document.querySelectorAll('[data-type]').forEach(function(a) {
+  if (a.dataset.type === activeType) a.classList.add('active');
+});
+document.querySelectorAll('[data-topic]').forEach(function(a) {
+  if (a.dataset.topic === activeTopic) a.classList.add('active');
+});
+
+// Update hero
+var hero = heroData[activeType] || heroData.all;
+if (activeTopic !== 'all' && topicHero[activeTopic]) {
+  document.getElementById('hero-tag').textContent = topicHero[activeTopic].tag;
+  document.getElementById('hero-title').innerHTML = topicHero[activeTopic].title;
+} else {
+  document.getElementById('hero-tag').textContent = hero.tag;
+  document.getElementById('hero-title').innerHTML = hero.title;
+}
+document.getElementById('hero-desc').textContent = hero.desc;
+
+// Apply filters
+document.querySelectorAll('.lib-card, .lib-card-sm').forEach(function(card) {
+  var typeMatch = activeType === 'all' || card.dataset.category === activeType;
+  var topicMatch = activeTopic === 'all' || card.dataset.topic === activeTopic;
+  card.style.display = (typeMatch && topicMatch) ? '' : 'none';
+});
+</script>
+</body>
+</html>

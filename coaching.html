@@ -3,23 +3,359 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coaching &amp; Products — Ilai Shimony</title>
+<title>Coaching — Ilai Shimony</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+/* ===== LIBRARY GRID ===== */
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 48px;
+}
+
+@media (max-width: 900px) {
+  .library-grid {
+    display: block;
+  }
+  .carousel-row {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .carousel-row::-webkit-scrollbar { display: none; }
+  .carousel-row .prod-card {
+    flex: 0 0 72vw;
+    max-width: 280px;
+    scroll-snap-align: start;
+  }
+}
+
+/* ===== PRODUCT CARD ===== */
+.prod-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.prod-card:hover {
+  border-color: rgba(46,134,222,0.5);
+  transform: translateY(-3px);
+}
+
+/* Featured card spans 2 columns */
+.prod-card.featured {
+  grid-column: span 2;
+  flex-direction: row;
+}
+
+@media (max-width: 900px) { .prod-card.featured { grid-column: span 1; flex-direction: column; } }
+
+/* Thumbnail */
+.prod-thumb {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.prod-card.featured .prod-thumb {
+  width: 340px;
+  aspect-ratio: auto;
+  min-height: 260px;
+}
+
+@media (max-width: 900px) { .prod-card.featured .prod-thumb { width: 100%; min-height: 200px; } }
+
+.prod-thumb-icon {
+  font-size: 52px;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+}
+
+.prod-card.featured .prod-thumb-icon { font-size: 64px; }
+
+/* Gradient backgrounds per product */
+.thumb-coaching  { background: linear-gradient(135deg, #0d2240 0%, #1a3a6e 50%, #2e86de 100%); }
+.thumb-sessions  { background: linear-gradient(135deg, #0d2240 0%, #1e3a5f 50%, #1a6eb5 100%); }
+.thumb-call      { background: linear-gradient(135deg, #111b2e 0%, #1c3050 50%, #2563a8 100%); }
+.thumb-analysis  { background: linear-gradient(135deg, #0e1f38 0%, #182d4a 50%, #1f5490 100%); }
+.thumb-ebooks    { background: linear-gradient(135deg, #111827 0%, #1a2540 50%, #243352 100%); }
+
+/* Glow overlay */
+.prod-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+}
+
+/* Real photo thumbnails */
+.prod-thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+  background: #0a1628;
+}
+
+.prod-thumb-photo {
+  background: #0a1628;
+}
+
+.prod-thumb-photo::after {
+  display: none;
+}
+
+/* Badge */
+.prod-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: rgba(46,134,222,0.9);
+  color: #fff;
+}
+
+.prod-badge.soon {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+}
+
+/* Card body */
+.prod-body {
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.prod-cat {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  color: var(--blue-lt);
+  margin-bottom: 8px;
+}
+
+.prod-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: 1px;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.prod-card.featured .prod-name { font-size: 30px; }
+
+.prod-desc {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.65;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.prod-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.prod-price {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: #fff;
+  line-height: 1;
+}
+
+.prod-price .prod-price-from {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+  display: block;
+  letter-spacing: .3px;
+  margin-bottom: 2px;
+}
+
+.prod-price.on-apply {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  color: var(--blue-lt);
+  text-transform: uppercase;
+}
+
+.prod-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: all 0.15s;
+  border: none;
+  cursor: pointer;
+}
+
+.prod-btn-primary {
+  background: var(--blue);
+  color: #fff;
+}
+
+.prod-btn-primary:hover { background: var(--blue-lt); }
+
+.prod-btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: rgba(255,255,255,0.65);
+}
+
+.prod-btn-ghost:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+
+.prod-btn-disabled {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Pill list inside featured */
+.prod-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.prod-pill {
+  font-size: 11px;
+  padding: 4px 10px;
+  background: rgba(46,134,222,0.1);
+  border: 1px solid rgba(46,134,222,0.2);
+  border-radius: 20px;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: .3px;
+}
+
+/* ===== BOTTOM BANNER ===== */
+.lib-banner {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.lib-banner h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.lib-banner p {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+@media (max-width: 900px) {
+  .prod-thumb { aspect-ratio: 4/3; }
+  .prod-thumb-icon { font-size: 36px; }
+  .prod-body { padding: 12px 14px 14px; }
+  .prod-name { font-size: 16px; }
+  .prod-desc { font-size: 11.5px; margin-bottom: 10px; }
+  .prod-price { font-size: 20px; }
+  .prod-btn { padding: 8px 12px; font-size: 11px; }
+  .prod-pills { display: none; }
+  .prod-card.featured .prod-name { font-size: 22px; }
+}
+
+@media (max-width: 700px) {
+  .lib-banner { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
+}
+</style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="logo">
-    <div class="logo-name"><span>ILAI SHIMONY</span></div>
-    <div class="logo-sub">Online Coaching</div>
-  </a>
+  <div class="nav-left">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Ilai Shimony" class="logo-img">
+    </a>
+    <div class="nav-social">
+      <a href="https://instagram.com/ilaishimony1" target="_blank" class="nav-social-link" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        <div class="nav-social-text">
+          <span class="nav-social-handle">@ilaishimony1</span>
+        </div>
+      </a>
+      <a href="mailto:ilaishimony1@gmail.com" class="nav-social-link" aria-label="Email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div class="nav-social-text">
+          <span class="nav-social-label">For business inquiries</span>
+          <span class="nav-social-handle">ilaishimony1@gmail.com</span>
+        </div>
+      </a>
+    </div>
+  </div>
   <div class="nav-links">
     <a href="index.html">Home</a>
-    <a href="coaching.html">Coaching &amp; Products</a>
+    <a href="coaching.html">Coaching</a>
+    <a href="ebooks.html">E-Books</a>
+    
     <a href="app.html">My App</a>
+    <a href="events.html">Events &amp; Workshops</a>
     <a href="about.html">About Me</a>
-    <a href="faq.html">Q&amp;A</a>
+    <a href="faq.html">FAQ</a>
+    <a href="cart.html" class="nav-cart" aria-label="Cart" style="position:relative;padding:8px 10px;color:rgba(255,255,255,0.6);display:inline-flex;align-items:center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"\/><circle cx="20" cy="21" r="1"\/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"\/><\/svg>
+      <span class="cart-badge" style="display:none;position:absolute;top:2px;right:2px;background:#2e86de;color:#fff;font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;"><\/span>
+    <\/a>
     <a href="apply.html" class="nav-apply">Apply Now</a>
   </div>
   <button class="nav-burger" onclick="toggleMenu()" aria-label="Menu">
@@ -27,12 +363,27 @@
   </button>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-  <a href="index.html">Home</a>
-  <a href="coaching.html">Coaching &amp; Products</a>
-  <a href="app.html">My App</a>
-  <a href="about.html">About Me</a>
-  <a href="faq.html">Q&amp;A</a>
-  <a href="apply.html" class="nav-apply">Apply Now</a>
+  <div class="nav-mobile-header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Ilai Shimony" class="logo-img">
+    </a>
+    <button onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;color:#fff;padding:4px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="nav-mobile-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching</a>
+    <a href="ebooks.html">E-Books</a>
+    
+    <a href="app.html">My App</a>
+    <a href="events.html">Events &amp; Workshops</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">FAQ</a>
+  </div>
+  <div class="nav-mobile-footer">
+    <a href="apply.html" class="btn-main nav-apply">Apply Now</a>
+  </div>
 </div>
 
 <!-- PAGE HERO -->
@@ -41,94 +392,103 @@
   <div class="container page-hero-content">
     <div class="tag">Work With Me</div>
     <h1>COACHING &amp;<br>PRODUCTS</h1>
-    <p>Choose the level of support that works for you — from a single video analysis to a full 12-week personalized coaching experience.</p>
+    <p>Everything from a quick video analysis to a full 12-week coaching program. Pick what fits your needs.</p>
   </div>
 </section>
 
-<!-- MAIN COACHING CARD -->
+<!-- PRODUCT LIBRARY -->
 <section class="section">
   <div class="container">
 
-    <div class="main-card">
-      <div>
-        <div class="tag" style="margin-bottom:14px;">Most Popular</div>
-        <h2>12 WEEK 1:1 ONLINE COACHING</h2>
-        <p>The full experience. A completely personalized program built around your goals, your schedule, and your level — with direct access to me every single day.</p>
-        <div class="pills">
-          <span class="pill">Monthly Check-In Calls</span>
-          <span class="pill">Custom 12-Week Program</span>
-          <span class="pill">Coaching App Access</span>
-          <span class="pill">24/7 WhatsApp Support</span>
-          <span class="pill">Video Analysis</span>
-          <span class="pill">Private Client Group</span>
-          <span class="pill">Progress Tracking</span>
-          <span class="pill">Ongoing Adjustments</span>
+    <div class="library-grid">
+
+      <!-- FEATURED: 12-week coaching -->
+      <a href="apply.html" class="prod-card featured">
+        <div class="prod-thumb prod-thumb-photo">
+          <span class="prod-badge">Best Value</span>
+          <img src="images/1F47BAC1-C817-4A4C-927F-304802A050D8.JPG" alt="12-week coaching" class="prod-thumb-img">
         </div>
-      </div>
-      <div class="main-right">
-        <div class="apply-lbl">APPLY TO<br>GET PRICING</div>
-        <a href="apply.html" class="btn-main">Apply Now</a>
-        <div style="margin-top:12px; font-size:11px; color:var(--muted); letter-spacing:.5px;">Limited spots available</div>
-      </div>
+        <div class="prod-body">
+          <div class="prod-cat">1:1 Coaching</div>
+          <div class="prod-name">12-WEEK ONLINE COACHING</div>
+          <p class="prod-desc">The full experience — a completely personalized program built around your goals, your schedule, and your level. Direct access to me every single day.</p>
+          <div class="prod-pills">
+            <span class="prod-pill">Custom Program</span>
+            <span class="prod-pill">Monthly Calls</span>
+            <span class="prod-pill">WhatsApp Support</span>
+            <span class="prod-pill">Video Analysis</span>
+            <span class="prod-pill">Coaching App</span>
+            <span class="prod-pill">Ongoing Adjustments</span>
+          </div>
+          <div class="prod-footer">
+            <span class="prod-btn prod-btn-primary">Apply Now →</span>
+          </div>
+        </div>
+      </a>
+
+      <div class="carousel-row">
+
+      <!-- Video Analysis -->
+      <a href="product-video-analysis.html" class="prod-card">
+        <div class="prod-thumb prod-thumb-photo">
+          <span class="prod-badge">Most Popular</span>
+          <img src="images/Screenshot 2026-05-04 at 9.38.06.png" alt="Video Analysis" class="prod-thumb-img" style="transform:scale(1.888) translateX(-27px) translateY(-12px);clip-path:inset(0 80px);">
+        </div>
+        <div class="prod-body">
+          <div class="prod-cat">Quick Feedback</div>
+          <div class="prod-name">VIDEO ANALYSIS</div>
+          <p class="prod-desc">Send up to 10 training videos and get detailed personal feedback on what to fix, what's working, and what to focus on next.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$14.99</div>
+            <span class="prod-btn prod-btn-primary">Get Analysis</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Coaching Call -->
+      <a href="product-coaching-call.html" class="prod-card">
+        <div class="prod-thumb prod-thumb-photo">
+          <img src="images/compressed_1.jpg" alt="Coaching Call" class="prod-thumb-img">
+        </div>
+        <div class="prod-body">
+          <div class="prod-cat">Consultation</div>
+          <div class="prod-name">COACHING CALL</div>
+          <p class="prod-desc">One focused call plus 7 days of WhatsApp follow-up. A clear action plan and real accountability to kick things off.</p>
+          <div class="prod-footer">
+            <div class="prod-price">$34.99</div>
+            <span class="prod-btn prod-btn-primary">Book Now</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Video Call Sessions -->
+      <a href="product-video-sessions.html" class="prod-card">
+        <div class="prod-thumb prod-thumb-photo">
+          <img src="images/Screenshot 2025-12-15 at 17.30.22.png" alt="Video Call Sessions" class="prod-thumb-img">
+        </div>
+        <div class="prod-body">
+          <div class="prod-cat">1:1 Sessions</div>
+          <div class="prod-name">VIDEO CALL SESSIONS</div>
+          <p class="prod-desc">60-minute private sessions focused on technique, programming, or whatever you need. Available as single or packs.</p>
+          <div class="prod-footer">
+            <div class="prod-price">
+              <span class="prod-price-from">From</span>
+              $54.99
+            </div>
+            <span class="prod-btn prod-btn-primary">Book a Session</span>
+          </div>
+        </div>
+      </a>
+
+      </div><!-- end carousel-row -->
+
     </div>
 
-    <!-- THREE CARDS -->
-    <div class="grid3">
-      <div class="card">
-        <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--blue-lt);margin-bottom:14px;">1:1 Sessions</div>
-        <h3>VIDEO CALL SESSIONS</h3>
-        <p>60-minute private sessions focused entirely on your goals. Deep dive on technique, programming, or anything you need.</p>
-        <hr class="hr">
-        <ul class="list">
-          <li>Single session — <strong>$54.99</strong></li>
-          <li>3 sessions — <strong>$134.99</strong></li>
-          <li>5 sessions — <strong>$199.99</strong> <span style="color:var(--muted);font-size:11px;">(3 months)</span></li>
-        </ul>
-        <a href="https://rupa.pro/ilaishimony1/11_video_call_session_" class="btn-outline" target="_blank" style="margin-top:20px;">Book a Session</a>
-      </div>
-
-      <div class="card">
-        <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--blue-lt);margin-bottom:14px;">Consultation</div>
-        <h3>COACHING CALL</h3>
-        <p>One focused call plus 7 days of WhatsApp follow-up. Great for getting a clear plan and some accountability to kick things off.</p>
-        <hr class="hr">
-        <ul class="list">
-          <li>Full consultation call</li>
-          <li>Training video analysis</li>
-          <li>7-day WhatsApp feedback</li>
-          <li>Personalised action plan</li>
-        </ul>
-        <div class="price">$34.99</div>
-        <a href="https://rupa.pro/ilaishimony1/coaching_call_" class="btn-main" target="_blank">Book Now</a>
-      </div>
-
-      <div class="card dashed">
-        <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--blue-lt);margin-bottom:14px;">Coming Soon</div>
-        <h3>E-BOOKS &amp; GUIDES</h3>
-        <p>Structured training guides on handstands, calisthenics, and mobility. Everything you need to train with intention.</p>
-        <hr class="hr">
-        <div style="font-size:13px;color:var(--muted);line-height:1.7;">In-depth PDF guides currently in development — stay tuned. 👀</div>
-      </div>
-    </div>
-
-    <!-- VIDEO ANALYSIS WIDE CARD -->
-    <div class="wide">
-      <div>
-        <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--blue-lt);margin-bottom:10px;">Quick Feedback</div>
-        <h3>VIDEO ANALYSIS</h3>
-        <p>Send me up to 5 training videos and I'll give you detailed personal feedback on exactly what to fix, what's working, and what to focus on next.</p>
-      </div>
-      <div class="wide-r">
-        <div class="price">$14.99</div>
-        <a href="https://rupa.pro/ilaishimony1/video_analysis" class="btn-main" target="_blank">Get Analysis</a>
-      </div>
-    </div>
-
-    <!-- FREE CALL BANNER -->
-    <div class="products-banner">
+    <!-- BOTTOM BANNER -->
+    <div class="lib-banner">
       <div>
         <h3>NOT SURE WHERE TO START?</h3>
-        <p>Book a free 15-minute intro call and we'll figure out exactly what you need — no commitment, no pressure, just a real conversation.</p>
+        <p>Book a free 15-minute intro call — we'll figure out exactly what you need together. No commitment, no pressure.</p>
       </div>
       <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" class="btn-ghost" target="_blank">Book Free Call →</a>
     </div>
@@ -140,17 +500,19 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo-name"><span>ILAI SHIMONY</span></div>
-        <div class="logo-sub" style="margin-top:4px;">Online Coaching</div>
+        <img src="images/logo.png" alt="Ilai Shimony" class="logo-img">
         <p>Handstands, calisthenics &amp; mobility coaching for athletes who want to move better and train smarter.</p>
       </div>
       <div class="footer-col">
         <h4>Pages</h4>
         <a href="index.html">Home</a>
-        <a href="coaching.html">Coaching &amp; Products</a>
-        <a href="app.html">My App</a>
-        <a href="about.html">About Me</a>
-        <a href="faq.html">Q&amp;A</a>
+        <a href="coaching.html">Coaching</a>
+        <a href="ebooks.html">E-Books</a>
+    
+    <a href="app.html">My App</a>
+        <a href="events.html">Events &amp; Workshops</a>
+    <a href="about.html">About Me</a>
+        <a href="faq.html">FAQ</a>
       </div>
       <div class="footer-col">
         <h4>Work With Me</h4>
@@ -172,5 +534,50 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script src="js/cart.js"></script>
+<script>
+(function () {
+  if (window.innerWidth > 900) return;
+
+  var carousel = document.querySelector('.carousel-row');
+  if (!carousel) return;
+
+  var items = Array.from(carousel.children);
+  var n = items.length;
+
+  // Append clones after, prepend clones before (reversed so order stays correct)
+  items.forEach(function (el) { carousel.appendChild(el.cloneNode(true)); });
+  items.slice().reverse().forEach(function (el) { carousel.insertBefore(el.cloneNode(true), carousel.firstChild); });
+
+  function getSetWidth() {
+    var card = carousel.children[n];
+    var style = window.getComputedStyle(carousel);
+    var gap = parseFloat(style.gap) || 12;
+    return (card.offsetWidth + gap) * n;
+  }
+
+  requestAnimationFrame(function () {
+    var setW = getSetWidth();
+    carousel.scrollLeft = setW;
+
+    var lock = false;
+    carousel.addEventListener('scroll', function () {
+      if (lock) return;
+      var sl = carousel.scrollLeft;
+      if (sl >= setW * 2) {
+        lock = true;
+        carousel.style.scrollSnapType = 'none';
+        carousel.scrollLeft = sl - setW;
+        setTimeout(function () { carousel.style.scrollSnapType = 'x mandatory'; lock = false; }, 50);
+      } else if (sl < 1) {
+        lock = true;
+        carousel.style.scrollSnapType = 'none';
+        carousel.scrollLeft = sl + setW;
+        setTimeout(function () { carousel.style.scrollSnapType = 'x mandatory'; lock = false; }, 50);
+      }
+    }, { passive: true });
+  });
+})();
+</script>
 </body>
 </html>

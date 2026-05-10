@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — Ilai Shimony</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.cart-page { max-width: 720px; margin: 0 auto; padding: 100px 24px 80px; }
+.cart-page h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(40px, 8vw, 64px); letter-spacing: 2px; margin-bottom: 8px; }
+.cart-subtitle { font-size: 14px; color: rgba(255,255,255,0.4); margin-bottom: 40px; }
+
+/* Items list */
+.cart-items { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+.cart-item-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #111e33;
+  flex-shrink: 0;
+}
+.cart-item-info { flex: 1; }
+.cart-item-name { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.cart-item-price { font-size: 13px; color: rgba(255,255,255,0.45); }
+.cart-item-controls { display: flex; align-items: center; gap: 10px; }
+.qty-btn {
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.qty-btn:hover { background: rgba(255,255,255,0.12); }
+.qty-val { font-size: 14px; font-weight: 600; min-width: 20px; text-align: center; }
+.cart-item-remove {
+  background: none; border: none; color: rgba(255,255,255,0.25);
+  cursor: pointer; font-size: 18px; padding: 4px; transition: color 0.15s; margin-left: 4px;
+}
+.cart-item-remove:hover { color: #ff6b6b; }
+
+/* Summary */
+.cart-summary {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(46,134,222,0.2);
+  border-radius: 14px;
+  padding: 24px 24px;
+}
+.cart-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.cart-summary-row:last-of-type { border-bottom: none; }
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 20px;
+}
+.cart-total-label { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+.cart-total-val { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 1px; color: #fff; }
+#paypal-checkout-container { margin-top: 8px; }
+
+/* Discount code */
+.discount-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.discount-row input {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #fff;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: border-color 0.2s;
+}
+.discount-row input:focus { border-color: #2e86de; }
+.discount-row button {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.discount-row button:hover { background: rgba(255,255,255,0.12); }
+.discount-msg { font-size: 12px; margin-bottom: 12px; }
+.discount-msg.ok { color: #54d98c; }
+.discount-msg.err { color: #ff6b6b; }
+.discount-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(84,217,140,0.1);
+  border: 1px solid rgba(84,217,140,0.3);
+  border-radius: 20px;
+  padding: 3px 10px 3px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #54d98c;
+  margin-bottom: 14px;
+}
+.discount-tag button { background: none; border: none; color: #54d98c; cursor: pointer; font-size: 14px; padding: 0; line-height: 1; }
+.savings-row { color: #54d98c; font-size: 13px; }
+
+/* Empty state */
+.cart-empty {
+  text-align: center;
+  padding: 80px 24px;
+}
+.cart-empty-icon { font-size: 56px; margin-bottom: 20px; }
+.cart-empty h2 { font-family: 'Bebas Neue', sans-serif; font-size: 32px; letter-spacing: 1px; margin-bottom: 12px; color: rgba(255,255,255,0.6); }
+.cart-empty p { font-size: 14px; color: rgba(255,255,255,0.35); margin-bottom: 28px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="index.html" class="logo"><img src="images/logo.png" alt="Ilai Shimony" class="logo-img"></a>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching</a>
+    <a href="ebooks.html">E-Books</a>
+    <a href="app.html">My App</a>
+    <a href="events.html">Events &amp; Workshops</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">FAQ</a>
+    <a href="cart.html" class="nav-cart active" aria-label="Cart" style="position:relative;padding:8px 10px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="cart-badge" style="display:none;position:absolute;top:2px;right:2px;background:#2e86de;color:#fff;font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;"></span>
+    </a>
+    <a href="apply.html" class="nav-apply">Apply Now</a>
+  </div>
+  <button class="nav-burger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <div class="nav-mobile-header">
+    <a href="index.html" class="logo"><img src="images/logo.png" alt="Ilai Shimony" class="logo-img"></a>
+    <button onclick="toggleMenu()" style="background:none;border:none;cursor:pointer;color:#fff;padding:4px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="nav-mobile-links">
+    <a href="index.html">Home</a>
+    <a href="coaching.html">Coaching</a>
+    <a href="ebooks.html">E-Books</a>
+    <a href="app.html">My App</a>
+    <a href="events.html">Events &amp; Workshops</a>
+    <a href="about.html">About Me</a>
+    <a href="faq.html">FAQ</a>
+    <a href="cart.html">🛒 Cart</a>
+  </div>
+  <div class="nav-mobile-footer">
+    <a href="apply.html" class="btn-main nav-apply">Apply Now</a>
+  </div>
+</div>
+
+<div class="cart-page">
+  <h1>YOUR CART</h1>
+  <p class="cart-subtitle" id="cart-count-label"></p>
+
+  <!-- Empty state -->
+  <div id="cart-empty" style="display:none;" class="cart-empty">
+    <div class="cart-empty-icon">🛒</div>
+    <h2>Your cart is empty</h2>
+    <p>Browse coaching products and add something you like.</p>
+    <a href="coaching.html" class="btn-main" style="display:inline-flex;padding:13px 28px;text-decoration:none;">Browse Products</a>
+  </div>
+
+  <!-- Cart content (shown when items exist) -->
+  <div id="cart-has-items" style="display:none;">
+    <div class="cart-items" id="cart-items-list"></div>
+
+    <div class="cart-summary">
+      <div id="cart-summary-rows"></div>
+      <div id="discount-tag-area"></div>
+      <div class="discount-row">
+        <input type="text" id="discount-input" placeholder="Discount code" maxlength="30">
+        <button onclick="applyDiscount()">Apply</button>
+      </div>
+      <div class="discount-msg" id="discount-msg"></div>
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total</span>
+        <span class="cart-total-val" id="cart-total-val"></span>
+      </div>
+      <!-- PayPal renders here once and stays — never re-rendered -->
+      <div id="paypal-checkout-container"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="images/logo.png" alt="Ilai Shimony" class="logo-img">
+        <p>Handstands, calisthenics &amp; mobility coaching for athletes who want to move better and train smarter.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <a href="index.html">Home</a>
+        <a href="coaching.html">Coaching</a>
+        <a href="ebooks.html">E-Books</a>
+        <a href="app.html">My App</a>
+        <a href="events.html">Events &amp; Workshops</a>
+    <a href="about.html">About Me</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <h4>Work With Me</h4>
+        <a href="apply.html">Apply for Coaching</a>
+        <a href="https://calendar.app.google/KPaWogHwzNpyXrMc8" target="_blank">Book a Free Call</a>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Ilai Shimony. All rights reserved.</span></div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/discounts.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=BAAqCce0c6DNLsGsK0QHaYDep0-XiXFGlJIjsgF-JEuC0TmOQgvr-K1SaLkacgLlnEBByQsAjCQnS_3gYQ&currency=USD&disable-funding=venmo"></script>
+<script>
+var paypalRendered = false;
+
+function renderCart() {
+  var items = Cart.load();
+  var label = document.getElementById('cart-count-label');
+  var emptyEl = document.getElementById('cart-empty');
+  var hasItemsEl = document.getElementById('cart-has-items');
+
+  if (items.length === 0) {
+    label.textContent = '';
+    emptyEl.style.display = 'block';
+    hasItemsEl.style.display = 'none';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  hasItemsEl.style.display = 'block';
+
+  var count = Cart.count();
+  label.textContent = count + (count === 1 ? ' item' : ' items');
+
+  // Items list — show discounted price if applicable
+  document.getElementById('cart-items-list').innerHTML = items.map(function (item) {
+    var discPrice = ActiveDiscount.discountedPrice(item);
+    var priceHtml = discPrice < item.price
+      ? '<span style="text-decoration:line-through;color:rgba(255,255,255,0.25);margin-right:6px;">$' + item.price.toFixed(2) + '</span><span style="color:#54d98c;">$' + discPrice.toFixed(2) + '</span>'
+      : '$' + item.price.toFixed(2);
+    return '<div class="cart-item">' +
+      '<img class="cart-item-img" src="' + (item.img || '') + '" alt="' + item.name + '" onerror="this.style.display=\'none\'">' +
+      '<div class="cart-item-info">' +
+        '<div class="cart-item-name">' + item.name + '</div>' +
+        '<div class="cart-item-price">' + priceHtml + ' each</div>' +
+      '</div>' +
+      '<div class="cart-item-controls">' +
+        '<button class="qty-btn" onclick="changeQty(\'' + item.id + '\', -1)">−</button>' +
+        '<span class="qty-val">' + item.qty + '</span>' +
+        '<button class="qty-btn" onclick="changeQty(\'' + item.id + '\', 1)">+</button>' +
+        '<button class="cart-item-remove" onclick="removeItem(\'' + item.id + '\')" title="Remove">✕</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  // Summary rows
+  document.getElementById('cart-summary-rows').innerHTML = items.map(function (item) {
+    var discPrice = ActiveDiscount.discountedPrice(item);
+    return '<div class="cart-summary-row"><span>' + item.name + ' ×' + item.qty + '</span><span>$' + (discPrice * item.qty).toFixed(2) + '</span></div>';
+  }).join('');
+
+  // Savings row
+  var saved = ActiveDiscount.savings(items);
+  if (saved > 0) {
+    document.getElementById('cart-summary-rows').innerHTML += '<div class="cart-summary-row savings-row"><span>Discount</span><span>−$' + saved.toFixed(2) + '</span></div>';
+  }
+
+  // Active discount tag
+  var d = ActiveDiscount.get();
+  document.getElementById('discount-tag-area').innerHTML = d
+    ? '<div class="discount-tag">' + d.code + ' — ' + d.percent + '% off <button onclick="removeDiscount()">✕</button></div>'
+    : '';
+
+  // Total
+  var total = ActiveDiscount.discountedTotal(items);
+  document.getElementById('cart-total-val').textContent = '$' + total.toFixed(2);
+
+  // Render PayPal once — reads live cart+discount at click time
+  if (!paypalRendered) {
+    paypalRendered = true;
+    paypal.Buttons({
+      style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'pay', height: 48 },
+      createOrder: function (data, actions) {
+        var currentItems = Cart.load();
+        var finalTotal = ActiveDiscount.discountedTotal(currentItems);
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: finalTotal.toFixed(2) },
+            description: currentItems.map(function (i) { return i.name + ' ×' + i.qty; }).join(', ') + ' — Ilai Shimony'
+          }]
+        });
+      },
+      onApprove: function (data, actions) {
+        return actions.order.capture().then(function () {
+          Cart.clear();
+          ActiveDiscount.clear();
+          window.location.href = 'thankyou.html';
+        });
+      },
+      onError: function (err) { console.error('PayPal error', err); }
+    }).render('#paypal-checkout-container');
+  }
+}
+
+function applyDiscount() {
+  var code = document.getElementById('discount-input').value.trim();
+  var msgEl = document.getElementById('discount-msg');
+  if (!code) return;
+  var result = ActiveDiscount.apply(code);
+  if (result.ok) {
+    msgEl.textContent = '';
+    msgEl.className = 'discount-msg';
+    document.getElementById('discount-input').value = '';
+    renderCart();
+  } else {
+    msgEl.textContent = result.msg;
+    msgEl.className = 'discount-msg err';
+  }
+}
+
+function removeDiscount() {
+  ActiveDiscount.clear();
+  document.getElementById('discount-msg').textContent = '';
+  renderCart();
+}
+
+function changeQty(id, delta) {
+  var items = Cart.load();
+  var item = items.find(function (i) { return i.id === id; });
+  if (item) { Cart.setQty(id, item.qty + delta); }
+  renderCart();
+}
+
+function removeItem(id) {
+  Cart.remove(id);
+  renderCart();
+}
+
+// Allow pressing Enter in discount input
+document.addEventListener('DOMContentLoaded', function () {
+  renderCart();
+  var input = document.getElementById('discount-input');
+  if (input) input.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyDiscount(); });
+});
+</script>
+</body>
+</html>
