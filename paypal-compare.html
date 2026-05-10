@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayPal Button Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body { background: #0a1628; color: #fff; font-family: 'DM Sans', sans-serif; padding: 60px 24px; }
+h1 { font-size: 28px; margin-bottom: 8px; }
+p { color: rgba(255,255,255,0.45); font-size: 14px; margin-bottom: 48px; }
+.row { display: flex; gap: 48px; flex-wrap: wrap; }
+.col { flex: 1; min-width: 260px; }
+.col h2 { font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+.col label { font-size: 12px; color: rgba(255,255,255,0.3); display: block; margin-top: 12px; margin-bottom: 6px; }
+.box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+</style>
+</head>
+<body>
+<h1>PayPal Button Options</h1>
+<p>Compare stacked (with card logos) vs single button — pick what you prefer.</p>
+
+<div class="row">
+
+  <!-- STACKED -->
+  <div class="col">
+    <h2>Stacked (with cards + PayPal logo)</h2>
+    <div class="box">
+      <label>Looks like this:</label>
+      <style>.pp-FH44C43X3HKJA{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}</style>
+      <form action="https://www.paypal.com/ncp/payment/FH44C43X3HKJA" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
+        <input class="pp-FH44C43X3HKJA" type="submit" value="Buy Now" />
+        <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
+        <section style="font-size:0.75rem;">Powered by <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style="height:0.875rem;vertical-align:middle;"/></section>
+      </form>
+      <label style="margin-top:0;">Pros: shows accepted cards, feels trustworthy<br>Cons: takes more space</label>
+    </div>
+  </div>
+
+  <!-- SINGLE -->
+  <div class="col">
+    <h2>Single Button only</h2>
+    <div class="box">
+      <label>Looks like this:</label>
+      <form action="https://www.paypal.com/ncp/payment/FH44C43X3HKJA" method="post" target="_blank">
+        <input class="pp-FH44C43X3HKJA" type="submit" value="Buy Now" style="width:100%;text-align:center;border:none;border-radius:0.25rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:'Helvetica Neue',Arial,sans-serif;font-size:1rem;cursor:pointer;" />
+      </form>
+      <label style="margin-top:0;">Pros: clean, minimal, fits the site design<br>Cons: no card logos visible</label>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

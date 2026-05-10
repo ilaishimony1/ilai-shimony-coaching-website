@@ -10,31 +10,62 @@ nav {
   background:rgba(10,22,40,0.97);
   border-bottom:1px solid rgba(42,143,232,0.12);
 }
-.nav-left { display:flex; align-items:center; gap:40px; }
-.logo { cursor:pointer; display:flex; align-items:center; }
+.nav-left { display:flex; align-items:center; gap:16px; flex:1; min-width:0; }
+.nav-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.logo { cursor:pointer; display:flex; align-items:center; flex-shrink:0; }
 .logo-img { height:52px; width:auto; display:block; }
-.nav-social { display:flex; align-items:center; gap:20px; }
-.nav-social-link {
-  display:flex; align-items:center; gap:8px;
-  color:rgba(255,255,255,0.45);
-  transition:all 0.2s; text-decoration:none;
-}
-.nav-social-link:hover { color:#fff; }
-.nav-social-link svg { flex-shrink:0; }
-.nav-social-text { display:flex; flex-direction:column; gap:1px; }
-.nav-social-handle { font-size:12px; font-weight:500; color:rgba(255,255,255,0.7); line-height:1.2; transition:color .2s; }
-.nav-social-label { font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:.5px; line-height:1.2; }
-.nav-social-link:hover .nav-social-handle { color:#fff; }
-.nav-social-link:hover .nav-social-label { color:rgba(255,255,255,0.55); }
-.nav-links { display:flex; align-items:center; gap:4px; }
+.nav-links { display:flex; align-items:center; gap:2px; }
 .nav-links a {
-  color:rgba(255,255,255,0.6); text-decoration:none;
-  font-size:12px; font-weight:500; letter-spacing:1px; text-transform:uppercase;
-  padding:8px 14px; border-radius:4px; transition:all 0.2s;
+  color:rgba(255,255,255,0.55); text-decoration:none;
+  font-size:11px; font-weight:500; letter-spacing:.8px; text-transform:uppercase;
+  padding:7px 10px; border-radius:4px; transition:all 0.2s; white-space:nowrap;
 }
 .nav-links a:hover, .nav-links a.active { color:#fff; }
-.nav-apply { background:#2e86de !important; color:#fff !important; padding:10px 22px !important; font-weight:600 !important; margin-left:8px; }
+.nav-apply { background:#2e86de !important; color:#fff !important; padding:9px 18px !important; font-weight:600 !important; margin-left:4px; white-space:nowrap; }
 .nav-apply:hover { background:#54a0ff !important; }
+
+/* Nav search */
+.nav-search-wrap { position:relative; }
+.nav-search-icon {
+  position:absolute; left:10px; top:50%; transform:translateY(-50%);
+  pointer-events:none; color:rgba(255,255,255,0.3);
+}
+.nav-search-input {
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  padding:7px 12px 7px 32px;
+  color:#fff;
+  font-family:'DM Sans',sans-serif;
+  font-size:12px;
+  width:160px;
+  outline:none;
+  transition:border-color 0.2s, width 0.3s;
+}
+.nav-search-input:focus { border-color:rgba(46,134,222,0.5); width:220px; }
+.nav-search-input::placeholder { color:rgba(255,255,255,0.28); }
+.nav-search-results {
+  position:absolute; top:calc(100% + 8px); left:0;
+  min-width:320px; max-height:400px; overflow-y:auto;
+  background:#0d1e36;
+  border:1px solid rgba(46,134,222,0.25);
+  border-radius:10px;
+  display:none; z-index:2000;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+.nav-search-results.open { display:block; }
+.nav-search-result {
+  display:flex; flex-direction:column; gap:2px;
+  padding:11px 16px; text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  transition:background 0.15s;
+}
+.nav-search-result:last-child { border-bottom:none; }
+.nav-search-result:hover { background:rgba(46,134,222,0.1); }
+.nav-search-result-title { font-size:13px; font-weight:600; color:#fff; }
+.nav-search-result-type { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#54a0ff; margin-bottom:1px; }
+.nav-search-result-desc { font-size:11px; color:rgba(255,255,255,0.38); line-height:1.4; }
+.nav-search-empty { padding:18px 16px; font-size:13px; color:rgba(255,255,255,0.3); text-align:center; }
 
 /* Mobile nav */
 .nav-burger { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; z-index:1100; }

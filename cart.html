@@ -150,8 +150,7 @@
 <nav>
   <div class="nav-left">
     <a href="index.html" class="logo"><img src="images/logo.png" alt="Ilai Shimony" class="logo-img"></a>
-  </div>
-  <div class="nav-links">
+    <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="coaching.html">Coaching</a>
     <a href="ebooks.html">E-Books</a>
@@ -159,10 +158,15 @@
     <a href="events.html">Events &amp; Workshops</a>
     <a href="about.html">About Me</a>
     <a href="faq.html">FAQ</a>
-    <a href="cart.html" class="nav-cart active" aria-label="Cart" style="position:relative;padding:8px 10px;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-      <span class="cart-badge" style="display:none;position:absolute;top:2px;right:2px;background:#2e86de;color:#fff;font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;"></span>
-    </a>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="nav-search-wrap">
+      <svg class="nav-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="nav-search-input" id="nav-search-input" placeholder="Search..." autocomplete="off">
+      <div class="nav-search-results" id="nav-search-results"></div>
+    </div>
+    <a href="cart.html" class="nav-cart" aria-label="Cart" style="position:relative;padding:8px 10px;color:rgba(255,255,255,0.6);display:inline-flex;align-items:center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-badge" style="display:none;position:absolute;top:2px;right:2px;background:#2e86de;color:#fff;font-size:10px;font-weight:700;width:16px;height:16px;border-radius:50%;align-items:center;justify-content:center;"></span></a>
     <a href="apply.html" class="nav-apply">Apply Now</a>
   </div>
   <button class="nav-burger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -387,5 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (input) input.addEventListener('keydown', function (e) { if (e.key === 'Enter') applyDiscount(); });
 });
 </script>
+<script src="js/search-data.js"></script>
+<script src="js/nav-search.js"></script>
 </body>
 </html>
